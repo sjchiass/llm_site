@@ -29,14 +29,17 @@ defaults:
 jobs:
   # Build job
   build:
-    runs-on: python-latest
+    runs-on: ubuntu-latest
     steps:
-      - name: Install Hugo CLI
-        run: pip install pelican[markdown]
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+      - name: Install Pelican
+        run: pip install pelican[markdown]
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
