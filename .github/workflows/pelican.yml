@@ -44,9 +44,10 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Setup the theme
-        run: git clone https://github.com/jvanz/pelican-hyde
-        run: pelican-themes --install pelican-hyde
-        run: pelican-themes -l -v | grep pelican-hyde | echo "THEME='$(cat -)'" >> pelicanconf.py
+        run: |
+          git clone https://github.com/jvanz/pelican-hyde
+          pelican-themes --install pelican-hyde
+          pelican-themes -l -v | grep pelican-hyde | echo "THEME='$(cat -)'" >> pelicanconf.py
       - name: Build with Pelican
         run: pelican
       - name: Upload artifact
