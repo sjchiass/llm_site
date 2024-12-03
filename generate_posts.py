@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 import glob
 
-files = glob.glob("./content/*")
+files = glob.glob("./content/*.md")
 for f in files:
     os.remove(f)
 
@@ -40,8 +40,8 @@ with open("./content/introduction.md", "w") as f:
         ]
     )
 
-# Generate posts
-for i in range(10):
+# Generate posts, only 5 to make it all fit on one page
+for i in range(5):
     # Post about acquiring special ingredients
     if i % 5 == 1:
         filename = (

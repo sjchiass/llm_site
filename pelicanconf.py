@@ -1,5 +1,5 @@
 AUTHOR = 'Chef Pug'
-SITENAME = 'Pug Recipes'
+SITENAME = 'Pirate Pug Recipes'
 SITEURL = "https://sjchiass.github.io/llm_site"
 
 PATH = "content"
@@ -31,5 +31,8 @@ SOCIAL = (
 
 DEFAULT_PAGINATION = 10
 
+PROFILE_IMAGE = "pug_only.png"
+
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
+
