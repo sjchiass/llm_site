@@ -201,7 +201,7 @@ for cycle in range(1):
 
 # Say goodbye
 create_post(
-    "last Post",
+    "Last Post",
     "Life",
     pug.gen(
         "Pretend you're a food blogger but that this is your last post. You enjoyed cooking, but you are a pirate pug at heart. Tell us how you're going to return to the pirate pug life, but that you will always remember the fun you had writing your food blog. You're off to a new adventure!"
