@@ -48,6 +48,7 @@ def create_post(name, category, text):
                 text,
             ]
         )
+        f.write("\n\n# Comments\n\n")
         done_pugs = []
         for comment_thread in range(choice([1, 2, 3])):
             # For the comments, create a pug copy so that it doesn't remember...
