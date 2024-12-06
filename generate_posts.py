@@ -13,8 +13,9 @@ for f in files:
 
 # A simple class to give the LLM a system prompt and save its context
 class PugFriend:
-    def __init__(self, system=None):
+    def __init__(self, name, system=None):
         self.context = None
+        self.name = name
         self.system = system
 
     def gen(self, prompt):
@@ -60,7 +61,7 @@ def create_post(name, category, text):
 
             # Start the conversation
             critic_reply = pug_friend["llm"].gen(
-                "You are browing a food blogger's blog. Write a succinct reply to this post: \""
+                f"You are browsing {pug.name}'s foodie blog. Write a succinct reply to this post: \""
                 + text
                 + '"'
             )
@@ -73,7 +74,7 @@ def create_post(name, category, text):
             while True:
                 # Reply from author
                 author_reply = pug.gen(
-                    "A food critic has added the following comment, write back a succinct reply: "
+                    f"A reader named {pug_friend['name']} has added the following comment, write back a succinct reply: "
                     + '"'
                     + critic_reply
                     + '"'
@@ -85,7 +86,7 @@ def create_post(name, category, text):
                     odds *= 2
                 # Reply back from friend
                 critic_reply = pug_friend["llm"].gen(
-                    'The author of the blog has replied to your post, answer them back very succinctly: "'
+                    f"{pug.name} has replied to your post, answer them back very succinctly: "
                     + author_reply
                     + '"'
                 )
@@ -102,23 +103,14 @@ def create_post(name, category, text):
 
 # Create a pirate pug chef
 pug = PugFriend(
-    "Your name is PugBeard. You are a pirate pug who has become a food blogger. You come up with recipes while sailing the seas for treasure. You are an enthusiastic programmer of R and Python."
+    system="Your name is PugBeard. You are a pirate pug who has become a food blogger. You come up with recipes while sailing the seas for treasure. You are an enthusiastic programmer of R and Python.",
+    name="PugBeard"
 )
 
-other_pugs = json.loads(open("./other_pugs.json", "r").read())
-other_pugs_emojis = json.loads(open("./other_pugs_emojis.json", "r").read())
-friends = []
+friends = json.loads(open("./other_pugs.json", "r").read())
 
-# Each friend pug gets their own prompt, context and emoji
-for x in other_pugs.keys():
-    friends.append(
-        {
-            "name": x,
-            "prompt": other_pugs[x],
-            "llm": PugFriend(other_pugs[x]),
-            "emoji": other_pugs_emojis[x],
-        }
-    )
+for friend in friends:
+    friend["llm"] = PugFriend(system=friend["prompt"], name=friend["name"])
 
 #
 # Post generation
@@ -170,11 +162,11 @@ for cycle in range(1):
     # Post a code workshop
     create_post(
         pug.gen(
-            "Come up with a title for a blogpost about using R and ggplot2 code to generate a Christmas treat data visualization. Only answer with the name please."
+            "Come up with a title for a blogpost about using the R tidyverse and ggplot2 code to generate a Christmas treat data visualization. Only answer with the name please."
         ),
         "R",
         pug.gen(
-            "Now pretend you are a R coder blogger and write a blogpost about using R and ggplot2 code to generate a Christmas treat data visualization. Make it encouraging and welcoming for beginners."
+            "Now pretend you are a R coder blogger and write a blogpost about using the R tidyverse and ggplot2 code to generate a Christmas treat data visualization. Make it encouraging and welcoming for beginners."
         ),
     )
 
