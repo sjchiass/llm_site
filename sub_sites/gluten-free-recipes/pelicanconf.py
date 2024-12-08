@@ -1,6 +1,6 @@
 AUTHOR = "PugBeard"
-SITENAME = "Paws & Code"
-SITEURL = "https://sjchiass.github.io/llm_site/gluten-free-recipes"
+SITENAME = ""
+SITEURL = "https://sjchiass.github.io/llm_site"
 
 PATH = "content"
 
@@ -17,11 +17,10 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 # To make regex sub easier, keep these in []
-LINKS = [("Byte-Sized Bites & Algorithmic Eats", 'https://sjchiass.github.io/llm_site'),
-    ("Low Tides & Low Carb", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes')]
+MENUITEMS = []
 
-# Infor about the pug
-BIO = "I be PugBeard, a swashbucklin' pirate pug with a passion for cookin' up gluten-free treasures on the high seas and codin' away in R and Python!"
+# Info about the pug
+BIO = ""
 
 # Social widget
 SOCIAL = (
@@ -37,3 +36,10 @@ PROFILE_IMAGE = "pug_only.png"
 RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
+
+SITENAME = "Treasures Afloat: Gluten-Free Seas"
+SITEURL = "https://sjchiass.github.io/llm_site/gluten-free-recipes"
+BIO = "I be PugBeard, a swashbucklin' pirate pug with a passion for cookin' up tasty treasures on the high seas, sharin' me gluten-free recipe adventures with ye through me blog!"
+MENUITEMS = [("Byte-Sized Bites", 'https://sjchiass.github.io/llm_site'),
+    ("Paws & Macros", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes')]
+COLOR_THEME = '0a'
