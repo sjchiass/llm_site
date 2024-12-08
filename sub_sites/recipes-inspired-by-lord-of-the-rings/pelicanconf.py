@@ -37,15 +37,15 @@ RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
 
-SITENAME = "Treasures from the Pug's Pantry"
-SITEURL = "https://sjchiass.github.io/llm_site/gluten-free-recipes"
-BIO = "I be PugBeard, a swashbucklin' pug pirate chef who sails the seven seas in search o' treasure and culinary inspiration to share with me hearties through me gluten-free grub blog!"
+SITENAME = "Middle Earth Morsels & Code"
+SITEURL = "https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings"
+BIO = "PugBeard, a swashbuckling pug pirate with a passion for cooking up a storm in the galley, brings ye a culinary journey through Middle-earth with his Lord of the Rings-inspired recipes and coding skills in R and Python."
 MENUITEMS = [("Byte-Sized Bites", 'https://sjchiass.github.io/llm_site'),
     ("Low Tides, High Flavor", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
+    ("Treasures from the Pug's Pantry", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
     ("Paws & Seaweed", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
     ("Treasures from the Canine Galley", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
     ("Pawsome Puddles & Treasured Treats", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
     ("Meat Plunderer's Cookbook: Recipes from the High Seas", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
-    ("Flavors of the Unseen Menu", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
-    ("Middle Earth Morsels & Code", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
-COLOR_THEME = '0a'
+    ("Flavors of the Unseen Menu", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity')]
+COLOR_THEME = '08'
