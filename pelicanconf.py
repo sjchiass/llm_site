@@ -1,5 +1,5 @@
-AUTHOR = 'Chef Pug'
-SITENAME = 'Pirate Pug Recipes'
+AUTHOR = "PugBeard"
+SITENAME = ""
 SITEURL = "https://sjchiass.github.io/llm_site"
 
 PATH = "content"
