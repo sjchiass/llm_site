@@ -11,10 +11,6 @@ from pathlib import Path
 import shutil
 
 # Cleanup
-if os.path.isdir("./output"):
-    shutil.rmtree("./output")
-if os.path.isdir("./outputs"):
-    shutil.rmtree("./outputs")
 if os.path.isdir("./main_site"):
     shutil.rmtree("./main_site")
 if os.path.isdir("./sub_sites"):
@@ -48,6 +44,21 @@ class PugFriend:
         )
         self.context = response.context
         return response.response
+
+    def gen_oneline(self, prompt):
+        while True:
+            response = generate(
+                model="llama3.2",
+                system=self.system,
+                prompt=prompt,
+                context=self.context,
+                options={"num_ctx": 32768},
+            )
+            if "\n" not in response.response:
+                print("Got one line, done ...")
+                return response.response
+            else:
+                print("Got more than one line, rerun ...")
 
     def get_context(self):
         return self.context
@@ -149,12 +160,12 @@ variations = [
     "recipes inspired by programming",
     "low-carb ketogenic recipes",
     "gluten-free recipes",
-    # "vegan recipes",
-    # "nut-free recipes",
-    # "dog-safe recipes for dogs",
-    # "meat-only recipes",
-    # "recipes made with abtract ingredients, like time, emotion, and identity",
-    # "recipes inspired by Lord of the Rings",
+    "vegan recipes",
+    "nut-free recipes",
+    "dog-safe recipes for dogs",
+    "meat-only recipes",
+    "recipes made with abtract ingredients, like time, emotion, and identity",
+    "recipes inspired by Lord of the Rings",
 ]
 
 base_prompt = "Your name is PugBeard. You are an old pirate pug who has become a food blogger. You come up with recipes while sailing the seas for treasure. You are an enthusiastic programmer of R and Python. Your food blog only has "
@@ -175,17 +186,20 @@ with open("./pelicanconf.py", "r+") as f:
         else:
             siteurl_list.append((blog.name, siteurl + "/" + blog.url))
 
+themes = ["08", "09", "0a", "0b", "0c", "0d", "0e", "0f"]
 
 for site_num, blog in enumerate(websites):
     print(f"Generating '{blog.name}', {site_num+1} out of {len(websites)} ...")
     print(f"Site will be at {siteurl}/{blog.url}")
     
     if site_num == 0:
-        Path(f"./main_site/content").mkdir(parents=True, exist_ok=True)
+        Path(f"./main_site/content/images").mkdir(parents=True, exist_ok=True)
         root_path = "main_site"
     else:
-        Path(f"./sub_sites/{slugify(blog.name)}/content").mkdir(parents=True, exist_ok=True)
-        root_path = f"sub_sites/{slugify(blog.name)}"
+        Path(f"./sub_sites/{slugify(blog.url)}/content/images").mkdir(parents=True, exist_ok=True)
+        root_path = f"sub_sites/{slugify(blog.url)}"
+    
+    shutil.copy("./pug_only.png", root_path+"/content/images/pug_only.png")
 
     # Prepare a list of urls and names for the other sites
     other_urls = (
@@ -200,17 +214,20 @@ for site_num, blog in enumerate(websites):
         + "]"
     )
 
+    # The configuration file is a Python script, so to overwrite values, just
+    # declare them again
     with open("./pelicanconf.py", "r+") as f:
         conf = f.read()
-        conf = re.sub(r"SITENAME = \"[^\"]*\"", f'SITENAME = "{blog.name}"', conf)
+        conf += f'\nSITENAME = "{blog.name}"'
         if site_num == 0:
-            conf = re.sub(r"SITEURL = \"[^\"]*\"", f'SITEURL = "{siteurl}"', conf)
+            conf += f'\nSITEURL = "{siteurl}"'
         else:
-            conf = re.sub(r"SITEURL = \"[^\"]*\"", f'SITEURL = "{siteurl}/{blog.url}"', conf)
-        conf = re.sub(r"BIO = \"[^\"]*\"", f'BIO = "{blog.bio}"', conf)
-        conf = re.sub(r"LINKS = [^\]]*]", f"LINKS = {other_urls}", conf)
+            conf += f'\nSITEURL = "{siteurl}/{blog.url}"'
+        conf += f'\nBIO = "{blog.bio}"'
+        conf += f"\nMENUITEMS = {other_urls}"
+        conf += f"\nCOLOR_THEME = '{themes[site_num % 8]}'"
     
-    with open(f"./{root_path}/pelican.conf", "w") as f:
+    with open(f"./{root_path}/pelicanconf.py", "w") as f:
         f.write(conf)
 
     # Create a pirate pug chef
@@ -245,7 +262,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Come up with a name for a mystical ingredient important in magical Christmas treats. Only answer with the name please."
             ),
             "Ingredients",
@@ -258,7 +275,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Come up with a name for Christmas treat dish. Only answer with the name please."
             ),
             "Recipes",
@@ -271,7 +288,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Come up with a title for a blogpost about using Python code to generate Christmas treat names. Only answer with the name please."
             ),
             "Python",
@@ -284,7 +301,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Come up with a title for a blogpost about using the R tidyverse and ggplot2 code to generate a Christmas treat data visualization. Only answer with the name please."
             ),
             "R",
@@ -297,7 +314,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Think of a place you had a fantastic pirate pug adventure. Only answer with the name please."
             ),
             "Adventures",
@@ -310,7 +327,7 @@ for site_num, blog in enumerate(websites):
         create_post(
             blog,
         root_path,
-            pug.gen(
+            pug.gen_oneline(
                 "Come up with a name for Christmas treat dish. Only answer with the name please."
             ),
             "Recipes",

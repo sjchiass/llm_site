@@ -17,9 +17,9 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 # To make regex sub easier, keep these in []
-LINKS = []
+MENUITEMS = []
 
-# Infor about the pug
+# Info about the pug
 BIO = ""
 
 # Social widget
@@ -35,3 +35,4 @@ PROFILE_IMAGE = "pug_only.png"
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
+THEME = "pelican-hyde"
