@@ -16,12 +16,11 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (
-    ("Pelican", "https://getpelican.com/"),
-    ("Python.org", "https://www.python.org/"),
-    ("Jinja2", "https://palletsprojects.com/p/jinja/"),
-    ("You can modify those links in your config file", "#"),
-)
+# To make regex sub easier, keep these in []
+LINKS = []
+
+# Infor about the pug
+BIO = ""
 
 # Social widget
 SOCIAL = (
