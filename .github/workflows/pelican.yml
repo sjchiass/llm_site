@@ -49,7 +49,7 @@ jobs:
           pelican-themes --install pelican-hyde
           pelican-themes -l -v | grep pelican-hyde | echo "THEME='$(cat -)'" >> pelicanconf.py
       - name: Build with Pelican
-        run: pelican
+        run: python build_sites.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

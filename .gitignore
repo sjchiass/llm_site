@@ -1,4 +1,5 @@
 output/
+pelican-hyde/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
