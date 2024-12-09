@@ -45,6 +45,7 @@ class PugFriend:
         self.context = response.context
         return response.response
 
+    # It's necessary to make sure to only get one line of output sometimes
     def gen_oneline(self, prompt):
         while True:
             response = generate(
@@ -55,10 +56,8 @@ class PugFriend:
                 options={"num_ctx": 32768},
             )
             if "\n" not in response.response:
-                print("Got one line, done ...")
+                self.context = response.context
                 return response.response
-            else:
-                print("Got more than one line, rerun ...")
 
     def get_context(self):
         return self.context
@@ -104,7 +103,7 @@ def create_post(blog, root_path, name, category, text):
         )
         f.write("\n\n# Comments\n\n")
         done_pugs = []
-        for comment_thread in range(choice([1, 2, 3, 4, 5])):
+        for comment_thread in range(5):
             # For the comments, create a pug copy so that it doesn't remember...
             saved_context = pug.get_context()
 
@@ -190,14 +189,15 @@ themes = ["08", "09", "0a", "0b", "0c", "0d", "0e", "0f"]
 
 for site_num, blog in enumerate(websites):
     print(f"Generating '{blog.name}', {site_num+1} out of {len(websites)} ...")
-    print(f"Site will be at {siteurl}/{blog.url}")
     
     if site_num == 0:
         Path(f"./main_site/content/images").mkdir(parents=True, exist_ok=True)
         root_path = "main_site"
+        print(f"Site will be at {siteurl}")
     else:
         Path(f"./sub_sites/{slugify(blog.url)}/content/images").mkdir(parents=True, exist_ok=True)
         root_path = f"sub_sites/{slugify(blog.url)}"
+        print(f"Site will be at {siteurl}/{blog.url}")
     
     shutil.copy("./pug_only.png", root_path+"/content/images/pug_only.png")
 
