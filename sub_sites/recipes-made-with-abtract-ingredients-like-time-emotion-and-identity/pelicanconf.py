@@ -37,15 +37,15 @@ RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
 
-SITENAME = "Flavors of the Unseen Menu"
+SITENAME = "Flavors of the Abyss: Where Ingredients are More than Just Tastebuds"
 SITEURL = "https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity"
-BIO = "As PugBeard, I be a swashbucklin' pug pirate who's traded me trusty cutlass fer a chef's hat, spendin' me days sailin' the seven seas in search o' treasure and writin' about recipes made with the finest ingredients: time, emotion, and identity!"
-MENUITEMS = [("Byte-Sized Bites", 'https://sjchiass.github.io/llm_site'),
-    ("Low Tides, High Flavor", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
-    ("Treasures from the Pug's Pantry", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
-    ("Paws & Seaweed", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
-    ("Treasures from the Canine Galley", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
-    ("Pawsome Puddles & Treasured Treats", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
-    ("Meat Plunderer's Cookbook: Recipes from the High Seas", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
-    ("Middle Earth Morsels & Code", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
+BIO = "I'm PugBeard, a swashbucklin' pug pirate blogger who's traded in me trusty cutlass for a chef's hat, sailin' the seven seas in search o' recipes that capture the essence o' time, emotion, and identity!"
+MENUITEMS = [("Code Cravings", 'https://sjchiass.github.io/llm_site'),
+    ("Low Tide Bites", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
+    ("Paws & Code: Gluten-Free Treasures from the Seven Seas", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
+    ("Paws & Plantains", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
+    ("Paws & Proper Provisions", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
+    ("Paw's Treasure Table", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
+    ("Meat Hoarder's Galleon", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
+    ("Middle Earth Morsels & Code Crumbs", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
 COLOR_THEME = '0f'

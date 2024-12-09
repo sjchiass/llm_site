@@ -37,15 +37,15 @@ RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
 
-SITENAME = "Meat Plunderer's Cookbook: Recipes from the High Seas"
+SITENAME = "Meat Hoarder's Galleon"
 SITEURL = "https://sjchiass.github.io/llm_site/meat-only-recipes"
-BIO = "I be PugBeard, a swashbucklin' pirate pug with a passion for cookin' up hearty meat dishes on the high seas and programmin' in R and Python to make the most of me treasure hunts!"
-MENUITEMS = [("Byte-Sized Bites", 'https://sjchiass.github.io/llm_site'),
-    ("Low Tides, High Flavor", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
-    ("Treasures from the Pug's Pantry", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
-    ("Paws & Seaweed", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
-    ("Treasures from the Canine Galley", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
-    ("Pawsome Puddles & Treasured Treats", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
-    ("Flavors of the Unseen Menu", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
-    ("Middle Earth Morsels & Code", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
+BIO = "I be PugBeard, a swashbucklin' pirate pug with a taste fer treasure and a passion fer cookin' up the finest, most booty-ful meat-based dishes on the seven seas!"
+MENUITEMS = [("Code Cravings", 'https://sjchiass.github.io/llm_site'),
+    ("Low Tide Bites", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
+    ("Paws & Code: Gluten-Free Treasures from the Seven Seas", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
+    ("Paws & Plantains", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
+    ("Paws & Proper Provisions", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
+    ("Paw's Treasure Table", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
+    ("Flavors of the Abyss: Where Ingredients are More than Just Tastebuds", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
+    ("Middle Earth Morsels & Code Crumbs", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
 COLOR_THEME = '0e'

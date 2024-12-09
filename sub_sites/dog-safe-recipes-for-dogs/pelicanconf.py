@@ -37,15 +37,15 @@ RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
 
-SITENAME = "Pawsome Puddles & Treasured Treats"
+SITENAME = "Paw's Treasure Table"
 SITEURL = "https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs"
-BIO = "I be PugBeard, a swashbucklin' pup pirate who charts culinary courses across the seven seas in search o' tasty, tail-waggin' treats fer me furry friends!"
-MENUITEMS = [("Byte-Sized Bites", 'https://sjchiass.github.io/llm_site'),
-    ("Low Tides, High Flavor", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
-    ("Treasures from the Pug's Pantry", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
-    ("Paws & Seaweed", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
-    ("Treasures from the Canine Galley", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
-    ("Meat Plunderer's Cookbook: Recipes from the High Seas", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
-    ("Flavors of the Unseen Menu", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
-    ("Middle Earth Morsels & Code", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
+BIO = "Ahoy, matey! I be PugBeard, a swashbucklin' pug pirate with a passion fer cookin' up tasty treats fer me furry mates at 'Paws & Code', me blog where I share me favorite dog-safe recipes and R and Python coding adventures!"
+MENUITEMS = [("Code Cravings", 'https://sjchiass.github.io/llm_site'),
+    ("Low Tide Bites", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
+    ("Paws & Code: Gluten-Free Treasures from the Seven Seas", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
+    ("Paws & Plantains", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
+    ("Paws & Proper Provisions", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
+    ("Meat Hoarder's Galleon", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
+    ("Flavors of the Abyss: Where Ingredients are More than Just Tastebuds", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
+    ("Middle Earth Morsels & Code Crumbs", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
 COLOR_THEME = '0d'
