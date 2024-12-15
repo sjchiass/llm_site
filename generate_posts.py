@@ -10,14 +10,22 @@ import argparse
 from pathlib import Path
 import shutil
 
-MODEL="llama3.1"
+MODEL = "llama3.2"
 CONTEXT_WINDOW = 32768
+MAKE_IMAGES = True
+
+SD_GENERATION_INSTRUCTION = []
 
 # Cleanup
 if os.path.isdir("./main_site"):
     shutil.rmtree("./main_site")
 if os.path.isdir("./sub_sites"):
     shutil.rmtree("./sub_sites")
+
+# Delete image generation instructions if they exist,
+# so that images are not generated with old instructions
+if os.path.exists("./sd_generation_instructions.json"):
+    os.remove("./sd_generation_instructions.json")
 
 parser = argparse.ArgumentParser(
     prog="ProgramName",
@@ -107,6 +115,26 @@ class Blog:
         self.pugbeard_prompt += f'\nYour food blog is named {self.name} and this is the bio you wrote for yourself: "{self.bio}"'
 
 
+class PromptMaker:
+    def __init__(
+        self,
+        system="You only answer with short prompts that can be used with the Stable Diffusion text-to-image generator. You do not use proper nouns. You enclose your prompt in curly brackets {}.",
+    ):
+        self.system = system
+
+    def gen(self, prompt):
+        while True:
+            response = generate(
+                model=MODEL,
+                system=self.system,
+                prompt=prompt,
+                options={"num_ctx": CONTEXT_WINDOW},
+            ).response
+            response = re.search(r"\{(.*?)\}", response)
+            if response is not None and len(response.group(1)) > 10:
+                return response.group(1)
+
+
 # A function for creating a blog post
 # An initial post is written, then 1-3 other pugs will comment a few times
 def create_post(blog, root_path, name, category, text):
@@ -120,6 +148,16 @@ def create_post(blog, root_path, name, category, text):
                 text,
             ]
         )
+        if MAKE_IMAGES:
+            sd_prompt = prompt_maker.gen(text)
+            fname = slugify(datetime.now().isoformat())
+            f.write(f"\n\n![{sd_prompt}]({{static}}/images/{fname}.jpg)\n\n")
+            SD_GENERATION_INSTRUCTION.append(
+                {
+                    "output_path": f"./{root_path}/content/images/{fname}.jpg",
+                    "prompt": sd_prompt,
+                }
+            )
         f.write("\n\n# Comments\n\n")
         done_pugs = []
         for comment_thread in range(5):
@@ -158,7 +196,12 @@ def create_post(blog, root_path, name, category, text):
                 )
                 conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
 
-                if get_answer.answer("Is the following conversation over?\n\n" + conversation) == "yes":
+                if (
+                    get_answer.answer(
+                        "Is the following conversation over?\n\n" + conversation
+                    )
+                    == "yes"
+                ):
                     break
 
             f.write(conversation)
@@ -257,6 +300,9 @@ for site_num, blog in enumerate(websites):
 
     # Create a simple LLM to answer yes/no questions
     get_answer = Answer()
+
+    # Create another simple LLM to generate image generation prompts
+    prompt_maker = PromptMaker()
 
     #
     # Post generation
@@ -362,3 +408,6 @@ for site_num, blog in enumerate(websites):
             "Pretend you're a food blogger but that this is your last post. You enjoyed cooking, but you are a pirate pug at heart. Tell us how you're going to return to the pirate pug life, but that you will always remember the fun you had writing your food blog. You're off to a new adventure!"
         ),
     )
+
+with open("sd_generation_instructions.json", "w") as f:
+    f.write(json.dumps(SD_GENERATION_INSTRUCTION, indent=4))
