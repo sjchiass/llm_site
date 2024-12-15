@@ -10,6 +10,9 @@ import argparse
 from pathlib import Path
 import shutil
 
+MODEL="llama3.1"
+CONTEXT_WINDOW = 32768
+
 # Cleanup
 if os.path.isdir("./main_site"):
     shutil.rmtree("./main_site")
@@ -36,24 +39,23 @@ class PugFriend:
 
     def gen(self, prompt):
         response = generate(
-            model="llama3.2",
+            model=MODEL,
             system=self.system,
             prompt=prompt,
             context=self.context,
-            options={"num_ctx": 32768},
+            options={"num_ctx": CONTEXT_WINDOW},
         )
         self.context = response.context
         return response.response
 
-    # It's necessary to make sure to only get one line of output sometimes
     def gen_oneline(self, prompt):
         while True:
             response = generate(
-                model="llama3.2",
+                model=MODEL,
                 system=self.system,
                 prompt=prompt,
                 context=self.context,
-                options={"num_ctx": 32768},
+                options={"num_ctx": CONTEXT_WINDOW},
             )
             if "\n" not in response.response:
                 self.context = response.context
@@ -66,6 +68,23 @@ class PugFriend:
         self.context = context
 
 
+# A simple class to answer Y/N questions
+class Answer:
+    def __init__(self):
+        self.system = "Only answer with Yes or No. If something is true, answer Yes. If something is false, answer No."
+
+    def answer(self, prompt):
+        while True:
+            response = generate(
+                model=MODEL,
+                system=self.system,
+                prompt=prompt,
+                options={"num_ctx": CONTEXT_WINDOW, "num_predict": 1},
+            ).response.lower()
+            if response in ["yes", "no"]:
+                return response
+
+
 # A class for storing site information
 class Blog:
     def __init__(
@@ -76,12 +95,12 @@ class Blog:
         self.pugbeard_prompt = base_prompt + variation
         self.url = slugify(variation)
         self.name = generate(
-            model="llama3.2",
+            model=MODEL,
             prompt="Give me the name of your food blog that hints at the kind of recipes it has. Only response with the name.",
             system=self.pugbeard_prompt,
         ).response.replace('"', "")
         self.bio = generate(
-            model="llama3.2",
+            model=MODEL,
             prompt="Give me a one sentence bio of yourself.",
             system=self.pugbeard_prompt,
         ).response.replace('"', "")
@@ -111,17 +130,15 @@ def create_post(blog, root_path, name, category, text):
             pug_friend = choice([x for x in friends if x["name"] not in done_pugs])
             done_pugs.append(pug_friend["name"])
 
+            conversation = ""
+
             # Start the conversation
             critic_reply = pug_friend["llm"].gen(
                 f'You are browsing the {blog.name} foodie blog written by {pug.name}. Write a succinct comment to this post from the blog: "'
                 + text
                 + '"'
             )
-            f.write(
-                f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
-            )
-
-            odds = 1
+            conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
 
             while True:
                 # Reply from author
@@ -131,26 +148,20 @@ def create_post(blog, root_path, name, category, text):
                     + critic_reply
                     + '"'
                 )
-                f.write(f"\n\n<hr>### PugBeard\n\n{author_reply}\n")
-                if randint(0, odds) != 0:
-                    break
-                else:
-                    odds *= 2
+                conversation += f"\n\n<hr>### PugBeard\n\n{author_reply}\n"
+
                 # Reply back from friend
                 critic_reply = pug_friend["llm"].gen(
                     f"{pug.name} has replied to your post in the {blog.name} foodie blog comment section, answer them back very succinctly: "
                     + author_reply
                     + '"'
                 )
-                f.write(
-                    f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
-                )
-                if randint(0, odds) != 0:
+                conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
+
+                if get_answer.answer("Is the following conversation over?\n\n" + conversation) == "yes":
                     break
-                else:
-                    odds *= 2
-                # break now because conversations seem to loop at this point
-                break
+
+            f.write(conversation)
             pug.set_context(saved_context)
             f.write("<hr>")
 
@@ -189,17 +200,19 @@ themes = ["08", "09", "0a", "0b", "0c", "0d", "0e", "0f"]
 
 for site_num, blog in enumerate(websites):
     print(f"Generating '{blog.name}', {site_num+1} out of {len(websites)} ...")
-    
+
     if site_num == 0:
         Path(f"./main_site/content/images").mkdir(parents=True, exist_ok=True)
         root_path = "main_site"
         print(f"Site will be at {siteurl}")
     else:
-        Path(f"./sub_sites/{slugify(blog.url)}/content/images").mkdir(parents=True, exist_ok=True)
+        Path(f"./sub_sites/{slugify(blog.url)}/content/images").mkdir(
+            parents=True, exist_ok=True
+        )
         root_path = f"sub_sites/{slugify(blog.url)}"
         print(f"Site will be at {siteurl}/{blog.url}")
-    
-    shutil.copy("./pug_only.png", root_path+"/content/images/pug_only.png")
+
+    shutil.copy("./pug_only.png", root_path + "/content/images/pug_only.png")
 
     # Prepare a list of urls and names for the other sites
     other_urls = (
@@ -226,7 +239,7 @@ for site_num, blog in enumerate(websites):
         conf += f'\nBIO = "{blog.bio}"'
         conf += f"\nMENUITEMS = {other_urls}"
         conf += f"\nCOLOR_THEME = '{themes[site_num % 8]}'"
-    
+
     with open(f"./{root_path}/pelicanconf.py", "w") as f:
         f.write(conf)
 
@@ -241,6 +254,9 @@ for site_num, blog in enumerate(websites):
 
     for friend in friends:
         friend["llm"] = PugFriend(system=friend["prompt"], name=friend["name"])
+
+    # Create a simple LLM to answer yes/no questions
+    get_answer = Answer()
 
     #
     # Post generation
@@ -261,7 +277,7 @@ for site_num, blog in enumerate(websites):
         # Post an ingredient adventure
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Come up with a name for a mystical ingredient important in magical Christmas treats. Only answer with the name please."
             ),
@@ -274,7 +290,7 @@ for site_num, blog in enumerate(websites):
         # Post a recipe
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Come up with a name for Christmas treat dish. Only answer with the name please."
             ),
@@ -287,7 +303,7 @@ for site_num, blog in enumerate(websites):
         # Post a code workshop
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Come up with a title for a blogpost about using Python code to generate Christmas treat names. Only answer with the name please."
             ),
@@ -300,7 +316,7 @@ for site_num, blog in enumerate(websites):
         # Post a code workshop
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Come up with a title for a blogpost about using the R tidyverse and ggplot2 code to generate a Christmas treat data visualization. Only answer with the name please."
             ),
@@ -313,7 +329,7 @@ for site_num, blog in enumerate(websites):
         # Post an adventure
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Think of a place you had a fantastic pirate pug adventure. Only answer with the name please."
             ),
@@ -326,7 +342,7 @@ for site_num, blog in enumerate(websites):
         # Post a recipe
         create_post(
             blog,
-        root_path,
+            root_path,
             pug.gen_oneline(
                 "Come up with a name for Christmas treat dish. Only answer with the name please."
             ),
