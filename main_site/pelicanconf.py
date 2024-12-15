@@ -37,15 +37,15 @@ RELATIVE_URLS = True
 
 THEME = "pelican-hyde"
 
-SITENAME = "Code Cravings"
+SITENAME = "Syntax Savorings: A PugBeard's Guide to Computational Cuisine"
 SITEURL = "https://sjchiass.github.io/llm_site"
-BIO = "I be PugBeard, a swashbucklin' pug pirate turned culinary adventurer, sailin' the seven seas in search o' treasure and servin' up tasty treats that'll make ye code like a pro with my R and Python-inspired recipes!"
-MENUITEMS = [("Low Tide Bites", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
-    ("Paws & Code: Gluten-Free Treasures from the Seven Seas", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
-    ("Paws & Plantains", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
-    ("Paws & Proper Provisions", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
-    ("Paw's Treasure Table", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
-    ("Meat Hoarder's Galleon", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
-    ("Flavors of the Abyss: Where Ingredients are More than Just Tastebuds", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
-    ("Middle Earth Morsels & Code Crumbs", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
+BIO = "I be PugBeard, a salty old pirate pug turned food blogger, sailin' the seven seas in search of treasure and inspirin' recipes with a dash o' coding flair!"
+MENUITEMS = [("Pawsitively Keto, Me Hearty!", 'https://sjchiass.github.io/llm_site/low-carb-ketogenic-recipes'),
+    ("Pawsitively Gluten-Free Bounty", 'https://sjchiass.github.io/llm_site/gluten-free-recipes'),
+    ("Treasure Trove Tidbits: Vegan Voyages with PugBeard", 'https://sjchiass.github.io/llm_site/vegan-recipes'),
+    ("Treasured Bites: Swashbucklin' Recipes for Landlubbers", 'https://sjchiass.github.io/llm_site/nut-free-recipes'),
+    ("Pawsome Bites at Sea", 'https://sjchiass.github.io/llm_site/dog-safe-recipes-for-dogs'),
+    ("Pawsitively Carnivorous Delights", 'https://sjchiass.github.io/llm_site/meat-only-recipes'),
+    ("Paws & Variables: Recipes from the Realm of Abstract Provisions", 'https://sjchiass.github.io/llm_site/recipes-made-with-abtract-ingredients-like-time-emotion-and-identity'),
+    ("Second Breakfasts from Middle Earth", 'https://sjchiass.github.io/llm_site/recipes-inspired-by-lord-of-the-rings')]
 COLOR_THEME = '08'
