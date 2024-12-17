@@ -10,9 +10,10 @@ import argparse
 from pathlib import Path
 import shutil
 
-MODEL = "llama3.2"
+MODEL = "llama3.1"
 CONTEXT_WINDOW = 32768
 MAKE_IMAGES = True
+MAKE_CONVERSATIONS = True
 
 SD_GENERATION_INSTRUCTION = []
 
@@ -26,6 +27,8 @@ if os.path.isdir("./sub_sites"):
 # so that images are not generated with old instructions
 if os.path.exists("./sd_generation_instructions.json"):
     os.remove("./sd_generation_instructions.json")
+if os.path.exists("./sd_generation_instructions_updated.json"):
+    os.remove("./sd_generation_instructions_updated.json")
 
 parser = argparse.ArgumentParser(
     prog="ProgramName",
@@ -158,55 +161,68 @@ def create_post(blog, root_path, name, category, text):
                     "prompt": sd_prompt,
                 }
             )
-        f.write("\n\n# Comments\n\n")
-        done_pugs = []
-        for comment_thread in range(5):
-            # For the comments, create a pug copy so that it doesn't remember...
-            saved_context = pug.get_context()
+        if MAKE_CONVERSATIONS:
+            f.write("\n\n# Comments\n\n")
+            done_pugs = []
+            for comment_thread in range(5):
+                # For the comments, create a pug copy so that it doesn't remember...
+                saved_context = pug.get_context()
 
-            # Don't have the same pug post twice. It's weird.
-            pug_friend = choice([x for x in friends if x["name"] not in done_pugs])
-            done_pugs.append(pug_friend["name"])
+                # Don't have the same pug post twice. It's weird.
+                pug_friend = choice([x for x in friends if x["name"] not in done_pugs])
+                done_pugs.append(pug_friend["name"])
 
-            conversation = ""
+                conversation = ""
 
-            # Start the conversation
-            critic_reply = pug_friend["llm"].gen(
-                f'You are browsing the {blog.name} foodie blog written by {pug.name}. Write a succinct comment to this post from the blog: "'
-                + text
-                + '"'
-            )
-            conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
-
-            while True:
-                # Reply from author
-                author_reply = pug.gen(
-                    f"A reader named {pug_friend['name']} has added the following comment, write back a succinct reply: "
-                    + '"'
-                    + critic_reply
-                    + '"'
-                )
-                conversation += f"\n\n<hr>### PugBeard\n\n{author_reply}\n"
-
-                # Reply back from friend
+                # Start the conversation
                 critic_reply = pug_friend["llm"].gen(
-                    f"{pug.name} has replied to your post in the {blog.name} foodie blog comment section, answer them back very succinctly: "
-                    + author_reply
+                    f'You are browsing the {blog.name} foodie blog written by {pug.name}. Write a succinct comment to this post from the blog: "'
+                    + text
                     + '"'
                 )
                 conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
 
-                if (
-                    get_answer.answer(
-                        "Is the following conversation over?\n\n" + conversation
+                while True:
+                    # Reply from author
+                    author_reply = pug.gen(
+                        f"A reader named {pug_friend['name']} has added the following comment, write back a succinct reply: "
+                        + '"'
+                        + critic_reply
+                        + '"'
                     )
-                    == "yes"
-                ):
-                    break
+                    conversation += f"\n\n<hr>### PugBeard\n\n{author_reply}\n"
 
-            f.write(conversation)
-            pug.set_context(saved_context)
-            f.write("<hr>")
+                    if (
+                        get_answer.answer(
+                            "Read this conversation:\n\n"
+                            + conversation
+                            + "\n\nIs this conversation over?"
+                        )
+                        == "yes"
+                    ):
+                        break
+
+                    # Reply back from friend
+                    critic_reply = pug_friend["llm"].gen(
+                        f"{pug.name} has replied to your post in the {blog.name} foodie blog comment section, answer them back very succinctly: "
+                        + author_reply
+                        + '"'
+                    )
+                    conversation += f"\n\n<hr>### {pug_friend['emoji']}{pug_friend['name']}{pug_friend['emoji']}\n\n{critic_reply}\n"
+
+                    if (
+                        get_answer.answer(
+                            "Read this conversation:\n\n"
+                            + conversation
+                            + "\n\nIs this conversation over?"
+                        )
+                        == "yes"
+                    ):
+                        break
+
+                f.write(conversation)
+                pug.set_context(saved_context)
+                f.write("<hr>")
 
 
 variations = [
@@ -228,7 +244,7 @@ websites = []
 for variation in variations:
     websites.append(Blog(variation))
 
-# SITEURL = "https://sjchiass.github.io/llm_site"
+# The SITEURL is read from your pelicanconf.py file, so you can change it there
 with open("./pelicanconf.py", "r+") as f:
     conf = f.read()
     siteurl = re.search(r"SITEURL = \"([^\"]+)\"", conf)[1]

@@ -1,7 +1,7 @@
 from diffusers import AutoPipelineForText2Image
 import torch
 import json
-
+import os
 
 pipeline = AutoPipelineForText2Image.from_pretrained(
     "stabilityai/stable-diffusion-xl-base-1.0",
@@ -12,12 +12,15 @@ pipeline = AutoPipelineForText2Image.from_pretrained(
 # To save a bit of memory
 # pipeline.enable_model_cpu_offload()
 
-data = json.load(open("./sd_generation_instructions.json", "r"))
+# if os.path.exists("./sd_generation_instructions_updated.json"):
+#     data = json.load(open("./sd_generation_instructions_updated.json", "r"))
+if os.path.exists("./sd_generation_instructions.json"):
+    data = json.load(open("./sd_generation_instructions.json", "r"))
 
 # Generate image from instructions, keep file size low
 # Use 1024x576 dimensions which allow video diffusion later (for GIFs?)
 for n, d in enumerate(data):
-    print(f"Gednerating image {n+1} of {len(data)} ...")
+    print(f"Generating image {n+1} of {len(data)} ...")
     prompt = d["prompt"]
     output_path = d["output_path"]
     pipeline(prompt, width=1024, height=576).images[0].save(
