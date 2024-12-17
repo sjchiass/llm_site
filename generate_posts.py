@@ -194,9 +194,8 @@ def create_post(blog, root_path, name, category, text):
 
                     if (
                         get_answer.answer(
-                            "Read this conversation:\n\n"
+                            "Is the following conversation starting to repeat itself?\n\n"
                             + conversation
-                            + "\n\nIs this conversation over?"
                         )
                         == "yes"
                     ):
@@ -212,9 +211,8 @@ def create_post(blog, root_path, name, category, text):
 
                     if (
                         get_answer.answer(
-                            "Read this conversation:\n\n"
+                            "Is the following conversation starting to repeat itself?\n\n"
                             + conversation
-                            + "\n\nIs this conversation over?"
                         )
                         == "yes"
                     ):
